@@ -60,29 +60,3 @@ passport.use(
     }
   )
 );
-
-passport.serializeUser((user, done) => {
-  console.log('Serializing user:', user.id);
-  done(null, user.id);
-});
-
-passport.deserializeUser(async (id, done) => {
-  try {
-    console.log('Deserializing user:', id);
-    const { data: user, error } = await supabase
-      .from('users')
-      .select('*')
-      .eq('id', id)
-      .single();
-
-    if (error) {
-      console.error('Deserialize error:', error);
-      return done(error);
-    }
-    console.log('Deserialized user:', user);
-    done(null, user);
-  } catch (error) {
-    console.error('Deserialize catch error:', error);
-    done(error);
-  }
-});

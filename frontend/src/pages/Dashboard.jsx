@@ -32,8 +32,11 @@ const Dashboard = () => {
   }, [requests, searchTerm, categoryFilter])
 
   const fetchRequests = async () => {
+    const token = localStorage.getItem('token')
     try {
-      const response = await axios.get(`${API_URL}/api/requests`, { withCredentials: true })
+      const response = await axios.get(`${API_URL}/api/requests`, {
+        headers: { Authorization: `Bearer ${token}` }
+      })
       setRequests(response.data)
     } catch (error) {
       console.error('Failed to fetch requests:', error)

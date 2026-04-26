@@ -36,8 +36,11 @@ const CreateRequest = () => {
     e.preventDefault()
     setLoading(true)
 
+    const token = localStorage.getItem('token')
     try {
-      await axios.post(`${API_URL}/api/requests`, formData, { withCredentials: true })
+      const response = await axios.post(`${API_URL}/api/requests`, formData, {
+        headers: { Authorization: `Bearer ${token}` }
+      })
       navigate('/dashboard')
     } catch (error) {
       console.error('Failed to create request:', error)

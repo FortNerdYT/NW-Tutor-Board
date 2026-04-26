@@ -31,8 +31,11 @@ const EditRequest = () => {
   }, [id])
 
   const fetchRequest = async () => {
+    const token = localStorage.getItem('token')
     try {
-      const response = await axios.get(`${API_URL}/api/requests/${id}`, { withCredentials: true })
+      const response = await axios.get(`${API_URL}/api/requests/${id}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      })
       
       if (response.data.teacher_id !== user?.id) {
         navigate('/dashboard')
@@ -73,8 +76,11 @@ const EditRequest = () => {
     e.preventDefault()
     setSaving(true)
 
+    const token = localStorage.getItem('token')
     try {
-      await axios.put(`${API_URL}/api/requests/${id}`, formData, { withCredentials: true })
+      await axios.put(`${API_URL}/api/requests/${id}`, formData, {
+        headers: { Authorization: `Bearer ${token}` }
+      })
       navigate(`/request/${id}`)
     } catch (error) {
       console.error('Failed to update request:', error)

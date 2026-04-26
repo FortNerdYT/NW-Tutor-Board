@@ -29,8 +29,11 @@ const MyRequests = () => {
   }, [user, navigate])
 
   const fetchRequests = async () => {
+    const token = localStorage.getItem('token')
     try {
-      const response = await axios.get(`${API_URL}/api/users/my-requests`, { withCredentials: true })
+      const response = await axios.get(`${API_URL}/api/users/my-requests`, {
+        headers: { Authorization: `Bearer ${token}` }
+      })
       setRequests(response.data)
     } catch (error) {
       console.error('Failed to fetch requests:', error)
@@ -42,8 +45,11 @@ const MyRequests = () => {
   const handleDelete = async (id) => {
     if (!confirm('Are you sure you want to delete this request?')) return
 
+    const token = localStorage.getItem('token')
     try {
-      await axios.delete(`${API_URL}/api/requests/${id}`, { withCredentials: true })
+      await axios.delete(`${API_URL}/api/requests/${id}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      })
       setRequests(requests.filter(req => req.id !== id))
     } catch (error) {
       console.error('Failed to delete request:', error)
@@ -52,8 +58,11 @@ const MyRequests = () => {
   }
 
   const handleMarkFilled = async (id) => {
+    const token = localStorage.getItem('token')
     try {
-      await axios.patch(`${API_URL}/api/requests/${id}/filled`, {}, { withCredentials: true })
+      await axios.patch(`${API_URL}/api/requests/${id}/filled`, {}, {
+        headers: { Authorization: `Bearer ${token}` }
+      })
       fetchRequests()
     } catch (error) {
       console.error('Failed to mark as filled:', error)

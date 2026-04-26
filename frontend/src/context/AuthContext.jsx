@@ -10,16 +10,35 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
+    // Check for token in URL (from OAuth callback)
+    const urlParams = new URLSearchParams(window.location.search)
+    const token = urlParams.get('token')
+    
+    if (token) {
+      localStorage.setItem('token', token)
+      window.history.replaceState({}, document.title, window.location.pathname)
+    }
+
     checkAuth()
   }, [])
 
   const checkAuth = async () => {
+    const token = localStorage.getItem('token')
+    if (!token) {
+      setUser(null)
+      setLoading(false)
+      return
+    }
+
     try {
-      const response = await axios.get(`${API_URL}/api/auth/me`, { withCredentials: true })
+      const response = await axios.get(`${API_URL}/api/auth/me`, {
+        headers: { Authorization: `Bearer ${token}` }
+      })
       console.log('User data:', response.data)
       setUser(response.data)
     } catch (error) {
       console.error('Auth check failed:', error)
+      localStorage.removeItem('token')
       setUser(null)
     } finally {
       setLoading(false)
@@ -31,21 +50,18 @@ export const AuthProvider = ({ children }) => {
   }
 
   const logout = async () => {
-    try {
-      await axios.post(`${API_URL}/api/auth/logout`, {}, { withCredentials: true })
-      setUser(null)
-      window.location.href = '/login'
-    } catch (error) {
-      console.error('Logout failed:', error)
-    }
+    localStorage.removeItem('token')
+    setUser(null)
+    window.location.href = '/login'
   }
 
   const updateRole = async (role) => {
+    const token = localStorage.getItem('token')
     try {
       const response = await axios.patch(
         `${API_URL}/api/users/role`,
         { role },
-        { withCredentials: true }
+        { headers: { Authorization: `Bearer ${token}` } }
       )
       setUser(response.data)
       return true

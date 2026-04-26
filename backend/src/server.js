@@ -12,7 +12,6 @@ console.log('Environment check:', {
 try {
   const express = require('express');
   const cors = require('cors');
-  const session = require('express-session');
   const passport = require('passport');
   const path = require('path');
   const authRoutes = require('./routes/auth');
@@ -29,25 +28,12 @@ app.use(cors({
   credentials: true
 }));
 app.use(express.json());
-app.use(session({
-  secret: process.env.SESSION_SECRET || 'your-secret-key',
-  resave: false,
-  saveUninitialized: true,
-  name: 'connect.sid',
-  cookie: {
-    secure: true,
-    httpOnly: true,
-    sameSite: 'lax',
-    maxAge: 24 * 60 * 60 * 1000
-  }
-}));
 
 // Serve static files from frontend
 app.use(express.static(path.join(__dirname, '../../frontend/dist')));
 
-// Passport setup
+// Passport setup (without session)
 app.use(passport.initialize());
-app.use(passport.session());
 require('./config/passport');
 
 // Routes
