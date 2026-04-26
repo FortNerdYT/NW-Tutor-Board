@@ -95,4 +95,39 @@ router.get('/users', adminMiddleware, async (req, res) => {
   }
 });
 
+// Get all teachers
+router.get('/teachers', adminMiddleware, async (req, res) => {
+  try {
+    const { data: teachers, error } = await supabase
+      .from('users')
+      .select('id, email, name, created_at')
+      .eq('role', 'teacher')
+      .order('created_at', { ascending: false });
+
+    if (error) throw error;
+
+    res.json(teachers);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Remove teacher role (set to student)
+router.delete('/teachers/:id', adminMiddleware, async (req, res) => {
+  try {
+    const { id } = req.params;
+    
+    const { error } = await supabase
+      .from('users')
+      .update({ role: 'student' })
+      .eq('id', id);
+
+    if (error) throw error;
+
+    res.json({ success: true });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 module.exports = router;
