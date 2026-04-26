@@ -9,11 +9,16 @@ router.get('/google', passport.authenticate('google', { scope: ['profile', 'emai
 router.get(
   '/google/callback',
   passport.authenticate('google', { 
-    failureRedirect: `${process.env.CLIENT_URL || 'http://localhost:5174'}/login?error=auth_failed`,
+    failureRedirect: `${(process.env.CLIENT_URL || 'http://localhost:5174').trim()}/login?error=auth_failed`,
     failureMessage: true
   }),
   (req, res) => {
-    res.redirect(`${process.env.CLIENT_URL || 'http://localhost:5174'}/dashboard`);
+    console.log('OAuth callback successful, redirecting to dashboard');
+    res.redirect(`${(process.env.CLIENT_URL || 'http://localhost:5174').trim()}/dashboard`);
+  },
+  (err, req, res, next) => {
+    console.error('OAuth callback error:', err);
+    res.redirect(`${(process.env.CLIENT_URL || 'http://localhost:5174').trim()}/login?error=auth_failed`);
   }
 );
 
