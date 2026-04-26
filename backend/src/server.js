@@ -14,6 +14,7 @@ try {
   const cors = require('cors');
   const session = require('express-session');
   const passport = require('passport');
+  const path = require('path');
   const authRoutes = require('./routes/auth');
   const requestRoutes = require('./routes/requests');
   const userRoutes = require('./routes/users');
@@ -41,6 +42,9 @@ app.use(session({
   }
 }));
 
+// Serve static files from frontend
+app.use(express.static(path.join(__dirname, '../../frontend/dist')));
+
 // Passport setup
 app.use(passport.initialize());
 app.use(passport.session());
@@ -54,6 +58,11 @@ app.use('/api/users', userRoutes);
 // Health check
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', message: 'Tutor Board API is running' });
+});
+
+// Serve frontend for all non-API routes
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../../frontend/dist/index.html'));
 });
 
 const PORT = process.env.PORT || 5000;
