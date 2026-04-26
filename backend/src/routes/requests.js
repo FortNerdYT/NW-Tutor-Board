@@ -64,7 +64,11 @@ router.get('/:id', async (req, res) => {
 // Create request (teachers only)
 router.post('/', authMiddleware, async (req, res) => {
   try {
+    console.log('Create request - User:', req.user);
+    console.log('Create request - Body:', req.body);
+
     if (req.user.role !== 'teacher') {
+      console.log('User is not a teacher:', req.user.role);
       return res.status(403).json({ error: 'Only teachers can create requests' });
     }
 
@@ -103,10 +107,15 @@ router.post('/', authMiddleware, async (req, res) => {
       .select()
       .single();
 
-    if (error) throw error;
+    if (error) {
+      console.error('Supabase error:', error);
+      throw error;
+    }
 
+    console.log('Request created successfully:', request);
     res.status(201).json(request);
   } catch (error) {
+    console.error('Create request error:', error);
     res.status(500).json({ error: error.message });
   }
 });
