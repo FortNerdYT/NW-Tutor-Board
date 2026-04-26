@@ -1,34 +1,18 @@
 # Deployment Guide
 
-This guide covers deploying the Tutor Board application to production.
+This guide covers deploying the Tutor Board application to production using **free tiers**.
 
 ## Prerequisites
 
 - Google Cloud project with OAuth credentials
-- Supabase project
-- Vercel account (for frontend)
-- Railway or Render account (for backend)
+- Supabase project (free tier available)
+- Vercel account (free for hobby projects)
+- Render account (free tier available)
 - GitHub repository with your code
 
-## Step 1: Push Code to GitHub
+## Step 1: Set Up Supabase (Free)
 
-1. Initialize git repository (if not already):
-   ```bash
-   git init
-   git add .
-   git commit -m "Initial commit"
-   ```
-2. Create a new repository on GitHub
-3. Push your code:
-   ```bash
-   git remote add origin https://github.com/your-username/tutor-board.git
-   git branch -M main
-   git push -u origin main
-   ```
-
-## Step 2: Set Up Supabase
-
-1. Create a new project at [supabase.com](https://supabase.com)
+1. Create a new project at [supabase.com](https://supabase.com) - Free tier includes 500MB database
 2. Go to SQL Editor and run the schema from `backend/supabase-schema.sql`
 3. Navigate to Project Settings → API
 4. Copy the following:
@@ -36,7 +20,7 @@ This guide covers deploying the Tutor Board application to production.
    - anon public key
    - service_role key (keep this secret!)
 
-## Step 3: Set Up Google OAuth for Production
+## Step 2: Set Up Google OAuth for Production
 
 1. Go to [Google Cloud Console](https://console.cloud.google.com)
 2. Create a new project or select existing
@@ -45,15 +29,21 @@ This guide covers deploying the Tutor Board application to production.
 5. Configure consent screen:
    - Application type: Web application
    - Authorized redirect URIs (we'll add these after deployment):
-     - `https://your-backend-domain.railway.app/api/auth/google/callback`
+     - `https://your-app.onrender.com/api/auth/google/callback`
 6. Copy Client ID and Client Secret
 
-## Step 4: Deploy Backend to Railway
+## Step 3: Deploy Backend to Render (Free)
 
-1. Create a new project on [Railway](https://railway.app)
-2. Click "New Project" → "Deploy from GitHub repo"
-3. Select your repository
-4. Set root directory to `backend`
+1. Create a new Web Service on [Render](https://render.com)
+2. Click "New +" → "Web Service"
+3. Connect your GitHub repository: `FortNerdYT/NW-Tutor-Board`
+4. Configure:
+   - Name: `tutor-board-backend`
+   - Root Directory: `backend`
+   - Runtime: `Node`
+   - Build Command: `npm install`
+   - Start Command: `node src/server.js`
+   - **Important**: Uncheck "Auto-Deploy" if it tries to auto-detect settings
 5. Add environment variables:
    ```
    PORT=5000
@@ -65,58 +55,48 @@ This guide covers deploying the Tutor Board application to production.
    SUPABASE_SERVICE_KEY=your_supabase_service_key
    CLIENT_URL=https://your-frontend-domain.vercel.app
    ```
-6. Click Deploy
-7. Copy the backend URL (e.g., `https://tutor-board-backend.railway.app`)
+6. Click "Create Web Service" - It will deploy on the free tier
+7. Copy the backend URL (e.g., `https://tutor-board-backend.onrender.com`)
 
-## Step 5: Deploy Frontend to Vercel
+## Step 4: Deploy Frontend to Vercel (Free)
 
 1. Create a new project on [Vercel](https://vercel.com)
-2. Import your GitHub repository
-3. Configure build settings:
+2. Click "Add New" → "Project"
+3. Import your GitHub repository: `FortNerdYT/NW-Tutor-Board`
+4. Configure:
    - Framework Preset: Vite
    - Root Directory: `frontend`
-4. Add environment variables:
+5. Add environment variables:
    ```
-   VITE_API_URL=https://your-backend-domain.railway.app
+   VITE_API_URL=https://your-app.onrender.com
    ```
-5. Click Deploy
-6. Copy the frontend URL (e.g., `https://tutor-board.vercel.app`)
+6. Click "Deploy" - Free for hobby projects
+7. Copy the frontend URL (e.g., `https://tutor-board.vercel.app`)
 
-## Step 6: Update Google OAuth Redirect URIs
+## Step 5: Update Google OAuth Redirect URIs
 
 1. Go back to [Google Cloud Console](https://console.cloud.google.com)
 2. Navigate to your OAuth 2.0 Client ID
 3. Edit the authorized redirect URIs
 4. Add your backend callback URL:
    ```
-   https://your-backend-domain.railway.app/api/auth/google/callback
+   https://your-app.onrender.com/api/auth/google/callback
    ```
 5. Save
 
-## Step 7: Update Backend CLIENT_URL
+## Step 6: Update Backend CLIENT_URL
 
-1. Go to your Railway project
-2. Navigate to Variables
+1. Go to your Render project
+2. Navigate to "Environment"
 3. Update `CLIENT_URL` to your actual Vercel frontend URL:
    ```
    CLIENT_URL=https://your-frontend-domain.vercel.app
    ```
-4. Railway will automatically redeploy
-
-## Alternative: Render for Backend
-
-If you prefer Render over Railway:
-
-1. Create a new Web Service on [Render](https://render.com)
-2. Connect your GitHub repository
-3. Set root directory to `backend`
-4. Add the same environment variables as Railway
-5. Deploy
-6. The callback URL will be: `https://your-app.onrender.com/api/auth/google/callback`
+4. Render will automatically redeploy
 
 ## Environment Variables Reference
 
-### Backend
+### Backend (Render)
 ```
 PORT=5000
 GOOGLE_CLIENT_ID=your_client_id
@@ -128,9 +108,9 @@ SUPABASE_SERVICE_KEY=your_supabase_service_key
 CLIENT_URL=https://your-frontend-domain.vercel.app
 ```
 
-### Frontend
+### Frontend (Vercel)
 ```
-VITE_API_URL=https://your-backend-domain.railway.app
+VITE_API_URL=https://your-app.onrender.com
 ```
 
 ## Testing the Deployment
