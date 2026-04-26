@@ -60,7 +60,7 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', message: 'Tutor Board API is running' });
 });
 
-// Serve frontend for all non-API routes
+// Serve frontend for all non-API routes (GET only)
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../../frontend/dist/index.html'));
 });
