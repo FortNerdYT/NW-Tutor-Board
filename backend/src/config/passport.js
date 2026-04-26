@@ -43,7 +43,7 @@ passport.use(
             google_id: profile.id,
             email: email,
             name: profile.displayName,
-            role: null // No default role, user must select
+            role: 'student' // Default to student, admin can promote to teacher
           })
           .select()
           .single();

@@ -55,24 +55,8 @@ export const AuthProvider = ({ children }) => {
     window.location.href = '/login'
   }
 
-  const updateRole = async (role) => {
-    const token = localStorage.getItem('token')
-    try {
-      const response = await axios.patch(
-        `${API_URL}/api/users/role`,
-        { role },
-        { headers: { Authorization: `Bearer ${token}` } }
-      )
-      setUser(response.data)
-      return true
-    } catch (error) {
-      console.error('Role update failed:', error)
-      return false
-    }
-  }
-
   return (
-    <AuthContext.Provider value={{ user, loading, login, logout, updateRole, checkAuth }}>
+    <AuthContext.Provider value={{ user, loading, login, logout, checkAuth }}>
       {children}
     </AuthContext.Provider>
   )

@@ -17,6 +17,7 @@ try {
   const authRoutes = require('./routes/auth');
   const requestRoutes = require('./routes/requests');
   const userRoutes = require('./routes/users');
+  const adminRoutes = require('./routes/admin');
   
   console.log('All modules loaded successfully');
 
@@ -40,6 +41,7 @@ require('./config/passport');
 app.use('/api/auth', authRoutes);
 app.use('/api/requests', requestRoutes);
 app.use('/api/users', userRoutes);
+app.use('/api/admin', adminRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {
