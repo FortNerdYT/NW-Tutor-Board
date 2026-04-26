@@ -1,11 +1,13 @@
 require('dotenv').config();
-const express = require('express');
-const cors = require('cors');
-const session = require('express-session');
-const passport = require('passport');
-const authRoutes = require('./routes/auth');
-const requestRoutes = require('./routes/requests');
-const userRoutes = require('./routes/users');
+
+try {
+  const express = require('express');
+  const cors = require('cors');
+  const session = require('express-session');
+  const passport = require('passport');
+  const authRoutes = require('./routes/auth');
+  const requestRoutes = require('./routes/requests');
+  const userRoutes = require('./routes/users');
 
 const app = express();
 
@@ -47,3 +49,8 @@ app.listen(PORT, () => {
   console.error('Server error:', err);
   process.exit(1);
 });
+
+} catch (error) {
+  console.error('Server startup error:', error);
+  process.exit(1);
+}
