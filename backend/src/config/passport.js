@@ -43,7 +43,7 @@ passport.use(
             google_id: profile.id,
             email: email,
             name: profile.displayName,
-            role: 'student' // Default role, can be changed later
+            role: null // No default role, user must select
           })
           .select()
           .single();
