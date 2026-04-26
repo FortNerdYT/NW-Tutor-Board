@@ -1,6 +1,17 @@
 -- Row Level Security (RLS) Policies
 -- Run this in Supabase SQL Editor to add RLS policies to existing tables
 
+-- First, drop any existing policies to avoid conflicts
+DROP POLICY IF EXISTS "Users are viewable by everyone" ON users;
+DROP POLICY IF EXISTS "Service key can manage users" ON users;
+DROP POLICY IF EXISTS "Unfilled requests are viewable by everyone" ON requests;
+DROP POLICY IF EXISTS "Service key can create requests" ON requests;
+DROP POLICY IF EXISTS "Teachers can create requests" ON requests;
+DROP POLICY IF EXISTS "Service key can update requests" ON requests;
+DROP POLICY IF EXISTS "Teachers can update own requests" ON requests;
+DROP POLICY IF EXISTS "Service key can delete requests" ON requests;
+DROP POLICY IF EXISTS "Teachers can delete own requests" ON requests;
+
 -- Enable RLS on tables
 ALTER TABLE users ENABLE ROW LEVEL SECURITY;
 ALTER TABLE requests ENABLE ROW LEVEL SECURITY;
@@ -19,26 +30,6 @@ CREATE POLICY "Service key can manage users" ON users
 CREATE POLICY "Unfilled requests are viewable by everyone" ON requests
   FOR SELECT USING (is_filled = false);
 
--- Allow service key to insert requests (bypasses teacher check)
-CREATE POLICY "Service key can create requests" ON requests
-  FOR INSERT WITH CHECK (auth.role() = 'service_role');
-
--- Allow teachers to insert their own requests (for client-side operations)
-CREATE POLICY "Teachers can create requests" ON requests
-  FOR INSERT WITH CHECK (auth.uid()::text = teacher_id::text);
-
--- Allow service key to update requests
-CREATE POLICY "Service key can update requests" ON requests
-  FOR UPDATE USING (auth.role() = 'service_role');
-
--- Allow teachers to update their own requests
-CREATE POLICY "Teachers can update own requests" ON requests
-  FOR UPDATE USING (auth.uid()::text = teacher_id::text);
-
--- Allow service key to delete requests
-CREATE POLICY "Service key can delete requests" ON requests
-  FOR DELETE USING (auth.role() = 'service_role');
-
--- Allow teachers to delete their own requests
-CREATE POLICY "Teachers can delete own requests" ON requests
-  FOR DELETE USING (auth.uid()::text = teacher_id::text);
+-- Allow service key full access to requests (backend uses service key)
+CREATE POLICY "Service key can manage requests" ON requests
+  FOR ALL USING (auth.role() = 'service_role');
