@@ -98,8 +98,8 @@ router.post('/', authMiddleware, async (req, res) => {
         min_grade,
         clubs,
         class_taken,
-        start_date,
-        end_date,
+        start_date: start_date || null,
+        end_date: end_date || null,
         is_ongoing: is_ongoing || false,
         contact_method: contact_method || req.user.email,
         contact_instructions
