@@ -12,11 +12,29 @@ const Admin = () => {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault()
-    // Store password for API calls
-    sessionStorage.setItem('adminPassword', password)
-    setIsAuthenticated(true)
+    setLoading(true)
+    setError('')
+
+    try {
+      const response = await axios.post(
+        `${API_URL}/api/admin/verify`,
+        {},
+        {
+          headers: { 'X-Admin-Password': password }
+        }
+      )
+
+      if (response.data.success) {
+        sessionStorage.setItem('adminPassword', password)
+        setIsAuthenticated(true)
+      }
+    } catch (err) {
+      setError('Invalid admin password')
+    } finally {
+      setLoading(false)
+    }
   }
 
   const handleImport = async (e) => {
@@ -81,12 +99,21 @@ const Admin = () => {
                 placeholder="Admin password"
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent mb-4"
                 required
+                disabled={loading}
               />
+              
+              {error && (
+                <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-4">
+                  {error}
+                </div>
+              )}
+
               <button
                 type="submit"
-                className="w-full bg-primary-600 text-white py-3 rounded-lg hover:bg-primary-700 transition-colors font-medium"
+                disabled={loading}
+                className="w-full bg-primary-600 text-white py-3 rounded-lg hover:bg-primary-700 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                Access Admin Panel
+                {loading ? 'Verifying...' : 'Access Admin Panel'}
               </button>
             </form>
           </div>

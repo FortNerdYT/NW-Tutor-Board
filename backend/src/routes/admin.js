@@ -3,6 +3,11 @@ const router = express.Router();
 const adminMiddleware = require('../middleware/admin');
 const supabase = require('../config/supabase');
 
+// Verify admin password
+router.post('/verify', adminMiddleware, (req, res) => {
+  res.json({ success: true });
+});
+
 // Import emails to set as teachers
 router.post('/import-teachers', adminMiddleware, async (req, res) => {
   try {
