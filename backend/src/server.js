@@ -1,5 +1,14 @@
 require('dotenv').config();
 
+console.log('Starting server...');
+console.log('Environment check:', {
+  PORT: process.env.PORT,
+  CLIENT_URL: process.env.CLIENT_URL,
+  SESSION_SECRET: process.env.SESSION_SECRET ? 'SET' : 'NOT SET',
+  SUPABASE_URL: process.env.SUPABASE_URL ? 'SET' : 'NOT SET',
+  GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID ? 'SET' : 'NOT SET'
+});
+
 try {
   const express = require('express');
   const cors = require('cors');
@@ -8,6 +17,8 @@ try {
   const authRoutes = require('./routes/auth');
   const requestRoutes = require('./routes/requests');
   const userRoutes = require('./routes/users');
+  
+  console.log('All modules loaded successfully');
 
 const app = express();
 
