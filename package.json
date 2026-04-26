@@ -3,8 +3,9 @@
   "version": "1.0.0",
   "description": "A marketplace-style platform for teachers to request student help",
   "scripts": {
-    "build:frontend": "cd frontend && npm install && npx vite build",
+    "build:frontend": "cd frontend && npm install --include=dev && npm run build",
     "install:backend": "cd backend && npm install",
+    "install:all": "npm run install:backend && npm run build:frontend",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "server": "cd backend && npm run dev",
     "client": "cd frontend && npm run dev",
