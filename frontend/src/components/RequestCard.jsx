@@ -33,9 +33,9 @@ const RequestCard = ({ request }) => {
 
   return (
     <Link to={`/request/${request.id}`}>
-      <div className="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow border border-gray-200 p-6 cursor-pointer">
+      <div className="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow border border-gray-200 p-4 sm:p-6 cursor-pointer h-full flex flex-col">
         <div className="flex items-start justify-between mb-3">
-          <span className={`px-3 py-1 rounded-full text-xs font-medium ${categoryColors[request.category]}`}>
+          <span className={`px-2 sm:px-3 py-1 rounded-full text-xs font-medium ${categoryColors[request.category]}`}>
             {categoryLabels[request.category]}
           </span>
           <div className="flex items-center text-xs text-gray-500">
@@ -44,16 +44,16 @@ const RequestCard = ({ request }) => {
           </div>
         </div>
 
-        <h3 className="text-lg font-semibold text-gray-900 mb-2">{request.title}</h3>
-        <p className="text-gray-600 text-sm mb-4">{preview}</p>
+        <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-2 line-clamp-2">{request.title}</h3>
+        <p className="text-gray-600 text-sm mb-4 line-clamp-3 flex-grow">{preview}</p>
 
-        <div className="flex items-center justify-between text-sm">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between text-sm gap-2 sm:gap-0">
           <div className="flex items-center text-gray-500">
-            <User className="h-4 w-4 mr-1" />
-            <span>{request.users?.name || 'Teacher'}</span>
+            <User className="h-4 w-4 mr-1 flex-shrink-0" />
+            <span className="truncate max-w-[120px] sm:max-w-[150px]">{request.users?.name || 'Teacher'}</span>
           </div>
           <div className="flex items-center text-gray-500">
-            <Calendar className="h-4 w-4 mr-1" />
+            <Calendar className="h-4 w-4 mr-1 flex-shrink-0" />
             <span>{formatDate(request.start_date)}</span>
           </div>
         </div>

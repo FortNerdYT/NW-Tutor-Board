@@ -103,13 +103,13 @@ const ViewRequest = () => {
         Back to Dashboard
       </button>
 
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-8">
-        <div className="flex items-start justify-between mb-6">
-          <div>
+      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-4 sm:p-8">
+        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between mb-6 gap-4">
+          <div className="flex-1">
             <span className="inline-block px-3 py-1 bg-primary-100 text-primary-800 rounded-full text-sm font-medium mb-3">
               {categoryLabels[request.category]}
             </span>
-            <h1 className="text-3xl font-bold text-gray-900">{request.title}</h1>
+            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">{request.title}</h1>
           </div>
           {isOwner && (
             <div className="flex space-x-2">
@@ -129,13 +129,13 @@ const ViewRequest = () => {
           )}
         </div>
 
-        <div className="flex items-center space-x-4 text-sm text-gray-600 mb-6">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:space-x-4 text-sm text-gray-600 mb-6 gap-2 sm:gap-0">
           <div className="flex items-center">
-            <User className="h-4 w-4 mr-1" />
-            <span>{request.users?.name || 'Teacher'}</span>
+            <User className="h-4 w-4 mr-1 flex-shrink-0" />
+            <span className="truncate">{request.users?.name || 'Teacher'}</span>
           </div>
           <div className="flex items-center">
-            <Calendar className="h-4 w-4 mr-1" />
+            <Calendar className="h-4 w-4 mr-1 flex-shrink-0" />
             <span>Posted {new Date(request.created_at).toLocaleDateString()}</span>
           </div>
         </div>
@@ -152,7 +152,7 @@ const ViewRequest = () => {
           </div>
         )}
 
-        <div className="grid md:grid-cols-2 gap-6 mb-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 mb-8">
           {request.min_grade && (
             <div>
               <h3 className="text-sm font-medium text-gray-500 mb-1">Minimum Grade</h3>
@@ -186,16 +186,16 @@ const ViewRequest = () => {
           </div>
         )}
 
-        <div className="flex items-center justify-between pt-6 border-t border-gray-200">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between pt-6 border-t border-gray-200 gap-4 sm:gap-0">
           <div className="flex items-center text-sm text-gray-600">
-            <Mail className="h-4 w-4 mr-1" />
-            <span>{request.contact_method}</span>
+            <Mail className="h-4 w-4 mr-1 flex-shrink-0" />
+            <span className="truncate">{request.contact_method}</span>
           </div>
-          <div className="flex space-x-3">
+          <div className="flex flex-col-reverse sm:flex-row sm:space-x-3 gap-2 sm:gap-0">
             {isOwner && !request.is_filled && (
               <button
                 onClick={handleMarkFilled}
-                className="flex items-center space-x-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+                className="flex items-center justify-center space-x-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
               >
                 <Check className="h-4 w-4" />
                 <span>Mark as Filled</span>
@@ -204,14 +204,14 @@ const ViewRequest = () => {
             {!isOwner && !request.is_filled && (
               <button
                 onClick={handleContact}
-                className="flex items-center space-x-2 px-6 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors"
+                className="flex items-center justify-center space-x-2 px-6 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors"
               >
                 <Mail className="h-4 w-4" />
                 <span>Contact Teacher</span>
               </button>
             )}
             {request.is_filled && (
-              <span className="px-4 py-2 bg-gray-100 text-gray-600 rounded-lg">
+              <span className="px-4 py-2 bg-gray-100 text-gray-600 rounded-lg text-center">
                 This position has been filled
               </span>
             )}

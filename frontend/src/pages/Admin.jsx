@@ -181,12 +181,12 @@ const Admin = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 px-4 py-8">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 px-4 py-4 sm:py-8">
       <div className="max-w-4xl mx-auto">
-        <div className="flex items-center justify-between mb-8">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 sm:mb-8 gap-4">
           <div className="flex items-center">
             <Shield className="h-8 w-8 text-primary-600 mr-3" />
-            <h1 className="text-3xl font-bold text-gray-900">Admin Panel</h1>
+            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Admin Panel</h1>
           </div>
           <button
             onClick={handleLogout}
@@ -196,7 +196,7 @@ const Admin = () => {
           </button>
         </div>
 
-        <div className="bg-white rounded-2xl shadow-lg p-8 mb-6">
+        <div className="bg-white rounded-2xl shadow-lg p-4 sm:p-8 mb-6">
           <h2 className="text-xl font-bold text-gray-900 mb-4 flex items-center">
             <Upload className="h-5 w-5 mr-2" />
             Import Teacher Emails

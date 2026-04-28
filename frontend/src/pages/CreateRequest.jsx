@@ -123,7 +123,7 @@ const CreateRequest = () => {
           />
         </div>
 
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">Minimum Grade</label>
             <select
@@ -177,7 +177,7 @@ const CreateRequest = () => {
               <label className="ml-2 text-sm text-gray-700">Ongoing opportunity</label>
             </div>
             {!formData.is_ongoing && (
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-xs text-gray-500 mb-1">Start Date</label>
                   <input
@@ -226,7 +226,7 @@ const CreateRequest = () => {
           />
         </div>
 
-        <div className="flex justify-end space-x-4">
+        <div className="flex flex-col-reverse sm:flex-row justify-end space-y-3 space-y-reverse sm:space-y-0 sm:space-x-4">
           <button
             type="button"
             onClick={() => navigate('/dashboard')}
